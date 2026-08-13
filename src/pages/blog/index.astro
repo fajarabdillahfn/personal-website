@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+---
+
+<BaseLayout title="Writing — Fajar" description="Notes, essays, and things Fajar is learning.">
+  <section class="page-intro container">
+    <p class="eyebrow">Writing</p>
+    <h1>Notes from<br /><em>the edges.</em></h1>
+    <p class="lede">Ideas in progress, lessons from building, and the occasional question I can’t stop thinking about.</p>
+  </section>
+
+  <section class="article-archive container section-border">
+    {posts.length > 0 ? posts.map((post) => <ArticleCard post={post} />) : <p class="empty-state">No notes published yet.</p>}
+  </section>
+</BaseLayout>

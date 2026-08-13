@@ -1,0 +1,73 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../components/ArticleCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+);
+const latestPost = posts[0];
+---
+
+<BaseLayout>
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">notes · projects · experiments</p>
+      <h1>Building a<br />life <em>in public.</em></h1>
+      <p class="hero-intro">
+        I write, build small experiments, and share what I learn along the way.
+        This is my corner of the internet.
+      </p>
+      <div class="button-row">
+        <a class="button button-primary" href="/blog/">Latest note <span aria-hidden="true">→</span></a>
+        <a class="button button-quiet" href="/projects/">View projects <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="hero-aside" aria-label="A few things about this site">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="hero-stamp">
+        <span class="stamp-dot"></span>
+        <span>Orbit diagram<br />keep building<br />keep learning</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container section-border">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">01 / Latest note</p>
+        <h2>Something on my mind</h2>
+      </div>
+      <a class="text-link" href="/blog/">All writing <span aria-hidden="true">↗</span></a>
+    </div>
+    {latestPost ? <ArticleCard post={latestPost} featured /> : <p class="empty-state">The first note is on its way.</p>}
+  </section>
+
+  <section class="section container section-border split-section">
+    <div>
+      <p class="eyebrow">02 / Selected projects</p>
+      <h2>Small things,<br /><em>made real.</em></h2>
+    </div>
+    <div class="project-list">
+      <a class="project-row" href="/projects/">
+        <span class="project-number">01</span>
+        <span class="project-copy"><strong>Personal site</strong><small>This site, built with Astro and Markdown.</small></span>
+        <span class="project-type">web app</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="project-row" href="/projects/">
+        <span class="project-number">02</span>
+        <span class="project-copy"><strong>More experiments</strong><small>Ideas, prototypes, and useful little tools.</small></span>
+        <span class="project-type">in progress</span>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="closing-cta container">
+    <p class="eyebrow">Have a thought to share?</p>
+    <h2>Let’s make the internet<br /><em>a little more human.</em></h2>
+    <a class="text-link" href="mailto:hello@example.com">Say hello <span aria-hidden="true">↗</span></a>
+  </section>
+</BaseLayout>

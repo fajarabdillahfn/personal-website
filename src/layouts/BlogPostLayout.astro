@@ -1,0 +1,33 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  publishedAt: Date;
+  tags: string[];
+  status: "seed" | "growing" | "evergreen";
+}
+
+const { title, description, publishedAt, tags, status } = Astro.props;
+const formattedDate = publishedAt.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={`${title} — Fajar`} description={description}>
+  <article class="post-page container narrow-container">
+    <a class="back-link" href="/blog/">← Back to writing</a>
+    <header class="post-header">
+      <div class="eyebrow">{status} · {tags.join(" · ") || "Notes"}</div>
+      <h1>{title}</h1>
+      <p class="post-description">{description}</p>
+      <time datetime={publishedAt.toISOString()}>{formattedDate}</time>
+    </header>
+    <div class="post-content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
